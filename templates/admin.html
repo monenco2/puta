@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Panel Admin</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="navbar">
+        <h1>Panel Admin 👑</h1>
+        <div>
+            <a href="/logout">Cerrar sesión</a>
+        </div>
+    </div>
+
+    <a href="/editor/nueva">➕ Crear nueva página</a>
+
+    <ul>
+    {% for name in pages %}
+        <li>
+            {{ name }}
+            <div>
+                <a href="/editor/{{ name }}">Editar</a> |
+                <a href="/page/{{ name }}" target="_blank">Ver</a>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+</div>
+
+</body>
+</html>
