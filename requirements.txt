@@ -2,4 +2,4 @@ Flask
 Flask-SQLAlchemy
 psycopg[binary]
 gunicorn
-python-3.11.9
+
