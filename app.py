@@ -1,12 +1,11 @@
 import os
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "secret123")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 # -------- MODELO --------
@@ -55,7 +54,7 @@ def admin():
 @app.route("/editor/<name>", methods=["GET","POST"])
 def editor(name):
     if not session.get("admin"):
-        return redirect("/login")
+        return redirect("/login")       
 
     page = Page.query.filter_by(name=name).first()
 
