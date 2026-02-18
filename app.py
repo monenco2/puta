@@ -3,28 +3,32 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 
 app = Flask(__name__)
+app.secret_key = "clave_super_segura_123"
 
-# 🔐 clave secreta
-app.secret_key = "clave_super_segura"
+# 🔗 CONEXIÓN A NEON (Render usa DATABASE_URL)
+database_url = os.environ.get("DATABASE_URL")
 
-# 🗄️ conexión a NEON (Render usa DATABASE_URL)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+# 👇 esto es importante para que funcione con PostgreSQL de Neon
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 
-# 🧱 MODELO DE PAGINAS
+# 🧱 MODELO DE TABLA
 class Page(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(100))
-    contenido = db.Column(db.Text)
+    titulo = db.Column(db.String(150), nullable=False)
+    contenido = db.Column(db.Text, nullable=False)
 
-# 👤 usuario fijo (admin)
-USER = "admin"
-PASS = "1234"
+# 👤 ADMIN FIJO
+ADMIN_USER = "admin"
+ADMIN_PASS = "1234"
 
 
-# 🌐 HOME
+# 🌐 HOME (PÚBLICO)
 @app.route("/")
 def home():
     pages = Page.query.all()
@@ -35,12 +39,13 @@ def home():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        user = request.form["user"]
-        password = request.form["password"]
+        user = request.form.get("user")
+        password = request.form.get("password")
 
-        if user == USER and password == PASS:
-            session["user"] = user
+        if user == ADMIN_USER and password == ADMIN_PASS:
+            session["admin"] = True
             return redirect("/admin")
+
     return render_template("login.html")
 
 
@@ -51,41 +56,24 @@ def logout():
     return redirect("/")
 
 
-# ⚙️ ADMIN PANEL
+# ⚙️ PANEL ADMIN
 @app.route("/admin")
 def admin():
-    if "user" not in session:
+    if not session.get("admin"):
         return redirect("/login")
 
     pages = Page.query.all()
     return render_template("admin.html", pages=pages)
 
 
-# ✏️ EDITOR
-@app.route("/editor/<int:id>", methods=["GET", "POST"])
-def editor(id):
-    if "user" not in session:
-        return redirect("/login")
-
-    page = Page.query.get(id)
-
-    if request.method == "POST":
-        page.titulo = request.form["titulo"]
-        page.contenido = request.form["contenido"]
-        db.session.commit()
-        return redirect("/admin")
-
-    return render_template("editor.html", page=page)
-
-
 # ➕ CREAR NUEVA PAGINA
 @app.route("/crear", methods=["POST"])
 def crear():
-    if "user" not in session:
+    if not session.get("admin"):
         return redirect("/login")
 
-    titulo = request.form["titulo"]
-    contenido = request.form["contenido"]
+    titulo = request.form.get("titulo")
+    contenido = request.form.get("contenido")
 
     nueva = Page(titulo=titulo, contenido=contenido)
     db.session.add(nueva)
@@ -94,8 +82,41 @@ def crear():
     return redirect("/admin")
 
 
-# 🚀 iniciar
+# ✏️ EDITAR PAGINA
+@app.route("/editor/<int:id>", methods=["GET", "POST"])
+def editor(id):
+    if not session.get("admin"):
+        return redirect("/login")
+
+    page = Page.query.get_or_404(id)
+
+    if request.method == "POST":
+        page.titulo = request.form.get("titulo")
+        page.contenido = request.form.get("contenido")
+        db.session.commit()
+        return redirect("/admin")
+
+    return render_template("editor.html", page=page)
+
+
+# 🗑️ ELIMINAR PAGINA (extra)
+@app.route("/eliminar/<int:id>")
+def eliminar(id):
+    if not session.get("admin"):
+        return redirect("/login")
+
+    page = Page.query.get_or_404(id)
+    db.session.delete(page)
+    db.session.commit()
+
+    return redirect("/admin")
+
+
+# 🔥 CREAR TABLAS AUTOMÁTICAMENTE (SOLUCIONA TU ERROR DE NEON)
+with app.app_context():
+    db.create_all()
+
+
+# 🚀 INICIO LOCAL
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
