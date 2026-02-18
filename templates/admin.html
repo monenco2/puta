@@ -1,35 +1,17 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Panel Admin</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-
+<link rel="stylesheet" href="/static/style.css">
 <div class="container">
 
-    <div class="navbar">
-        <h1>Panel Admin 👑</h1>
-        <div>
-            <a href="/logout">Cerrar sesión</a>
-        </div>
-    </div>
+<h2>Panel Admin</h2>
 
-    <a href="/editor/nueva">➕ Crear nueva página</a>
+{% for page in pages %}
+    <p>
+        {{ page.name }} |
+        <a href="/editor/{{ page.name }}">Editar</a> |
+        <a href="/{{ page.name }}" target="_blank">Ver</a>
+    </p>
+{% endfor %}
 
-    <ul>
-    {% for name in pages %}
-        <li>
-            {{ name }}
-            <div>
-                <a href="/editor/{{ name }}">Editar</a> |
-                <a href="/page/{{ name }}" target="_blank">Ver</a>
-            </div>
-        </li>
-    {% endfor %}
-    </ul>
+<br>
+<a href="/logout">Cerrar sesión</a>
 
 </div>
-
-</body>
-</html>

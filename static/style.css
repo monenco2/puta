@@ -1,0 +1,48 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f172a, #020617);
+    color: #e2e8f0;
+    margin: 0;
+}
+
+/* NAVBAR */
+.nav {
+    background: #020617;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav a {
+    color: #38bdf8;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: rgba(30,41,59,0.7);
+    padding: 40px;
+    border-radius: 15px;
+}
+
+/* FORM */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: none;
+    background: #1e293b;
+    color: white;
+}
+
+button {
+    padding: 10px 20px;
+    background: #0ea5e9;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+}

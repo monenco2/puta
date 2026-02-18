@@ -1,27 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Editor</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-
+<link rel="stylesheet" href="/static/style.css">
 <div class="container">
 
-<h2>Editando: {{ page_name }}</h2>
+<h2>Editando {{ name }}</h2>
 
 <form method="POST">
-    <input name="titulo" value="{{ page.titulo }}" placeholder="Título">
-
-    <textarea name="contenido" rows="10" placeholder="Contenido">{{ page.contenido }}</textarea>
-
+    <input name="titulo" value="{{ page.titulo if page }}">
+    <textarea name="contenido" rows="10">{{ page.contenido if page }}</textarea>
     <button>Guardar</button>
 </form>
 
-<br>
-<a href="/admin">⬅ Volver</a>
+<a href="/admin">Volver</a>
 
 </div>
-
-</body>
-</html>

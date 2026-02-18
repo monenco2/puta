@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ page.titulo }}</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-<div class="container page-content">
+{% block content %}
+<div class="container">
     <h1>{{ page.titulo }}</h1>
     <p>{{ page.contenido }}</p>
 </div>
-
-</body>
-</html>
+{% endblock %}
