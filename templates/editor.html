@@ -1,14 +1,13 @@
-<link rel="stylesheet" href="/static/style.css">
-<div class="container">
+{% extends "base.html" %}
+{% block content %}
+<h2>Editar Página</h2>
 
-<h2>Editando {{ name }}</h2>
-
-<form method="POST">
-    <input name="titulo" value="{{ page.titulo if page }}">
-    <textarea name="contenido" rows="10">{{ page.contenido if page }}</textarea>
+<form method="post" class="card">
+    Título:
+    <input name="titulo" value="{{ page.titulo }}">
+    Contenido:
+    <textarea name="contenido">{{ page.contenido }}</textarea>
     <button>Guardar</button>
 </form>
 
-<a href="/admin">Volver</a>
-
-</div>
+{% endblock %}

@@ -1,8 +1,13 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container">
-    <h1>{{ page.titulo }}</h1>
-    <p>{{ page.contenido }}</p>
+
+<h2>Páginas</h2>
+
+{% for p in pages %}
+<div class="card">
+    <h3>{{ p.titulo }}</h3>
+    <p>{{ p.contenido }}</p>
 </div>
+{% endfor %}
+
 {% endblock %}

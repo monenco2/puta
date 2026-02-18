@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Mi Web</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="nav">
-    <div>
-        <a href="/inicio">Inicio</a>
-        <a href="/sobre">Sobre</a>
-        <a href="/contacto">Contacto</a>
-    </div>
-    <div>
-        <a href="/admin">Admin</a>
-    </div>
-</div>
+<header>
+    <h1>Mi Página Web</h1>
+    <a href="/">Inicio</a> |
+    <a href="/login">Login</a> |
+    <a href="/admin">Admin</a>
+</header>
 
-{% block content %}{% endblock %}
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
 
 </body>
 </html>

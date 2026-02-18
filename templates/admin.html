@@ -1,17 +1,24 @@
-<link rel="stylesheet" href="/static/style.css">
-<div class="container">
-
+{% extends "base.html" %}
+{% block content %}
 <h2>Panel Admin</h2>
 
-{% for page in pages %}
-    <p>
-        {{ page.name }} |
-        <a href="/editor/{{ page.name }}">Editar</a> |
-        <a href="/{{ page.name }}" target="_blank">Ver</a>
-    </p>
+<form action="/crear" method="post" class="card">
+    <h3>Nueva Página</h3>
+    Título:
+    <input name="titulo">
+    Contenido:
+    <textarea name="contenido"></textarea>
+    <button>Crear</button>
+</form>
+
+<h3>Paginas existentes</h3>
+
+{% for p in pages %}
+<div class="card">
+    <h4>{{ p.titulo }}</h4>
+    <a href="/editor/{{ p.id }}">Editar</a>
+</div>
 {% endfor %}
 
-<br>
 <a href="/logout">Cerrar sesión</a>
-
-</div>
+{% endblock %}

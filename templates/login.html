@@ -1,9 +1,13 @@
-<link rel="stylesheet" href="/static/style.css">
-<div class="container">
-<h2>Login Admin</h2>
-<form method="POST">
-    <input name="username" placeholder="Usuario">
-    <input type="password" name="password" placeholder="Contraseña">
-    <button>Entrar</button>
-</form>
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+    <h2>Login</h2>
+    <form method="post">
+        Usuario:
+        <input type="text" name="user">
+        Contraseña:
+        <input type="password" name="password">
+        <button>Entrar</button>
+    </form>
 </div>
+{% endblock %}
